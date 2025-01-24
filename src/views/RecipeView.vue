@@ -1,31 +1,17 @@
 <template>
-  <div>Recipe {{ $route.params.id }}</div>
-  <nav>
-    <ul>
-      <li>
-        <RouterLink :to="{ name: 'recipe', params: { id: 1 } }">Recipe1</RouterLink>
-      </li>
-      <li>
-        <RouterLink :to="{ name: 'recipe', params: { id: 2 } }">Recipe2</RouterLink>
-      </li>
-      <li>
-        <RouterLink :to="{ name: 'recipe', params: { id: 3 } }">Recipe3</RouterLink>
-      </li>
-    </ul>
-  </nav>
+  <div>
+    <div>Recipe {{ $route.params.id }}</div>
+
+    <h1>{{ recipe?.name }}</h1>
+    <p>{{ recipe?.description }}</p>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
-import { RouterLink, useRoute } from 'vue-router';
+import { useRecipeStore } from '@/stores/recipe';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 const route = useRoute();
-console.log('🚀 ~ route:', route);
-
-watch(
-  () => route.params.id,
-  () => console.log('Fetching inside watch'),
-  {
-    immediate: true,
-  },
-);
+const recipeStore = useRecipeStore();
+const recipe = computed(() => recipeStore.getRecipeById(route.params.id as string));
 </script>
