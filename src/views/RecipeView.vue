@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div>Recipe {{ $route.params.id }}</div>
-
-    <h1>{{ recipe?.name }}</h1>
-    <p>{{ recipe?.description }}</p>
+    <!-- <div>Recipe {{ $route.params.id }}</div> -->
+    <h1 class="text-2xl font-bold mb-4" >{{ recipe?.name }}</h1>
+    <p class="mb-4">{{ recipe?.description }}</p>
+    <div class="flex items-center gap-4">
     <div>
-      <RouterLink :to="{ name: 'edit-recipe', params: { id: recipe?.id } }">Edit</RouterLink>
+      <RouterLink :to="{ name: 'edit-recipe', params: { id: recipe?.id } }" class="hover:underline text-orange-600">Edit</RouterLink>
     </div>
-
-    <button v-if="recipe" @click="recipeStore.toggleFavorite(recipe.id)">
+    <button v-if="recipe" @click="recipeStore.toggleFavorite(recipe.id)" class="px-4 py-2 rounded bg-orange-600 text-white hover:bg-orange-700" >
       {{ isFavorite ? 'Remove from favorites' : 'Add to favorites' }}
     </button>
+  </div>
   </div>
 </template>
 
