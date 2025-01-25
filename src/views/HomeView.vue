@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import RecipeList from '@/components/RecipeList.vue';
 import { useRecipeStore } from '@/stores/recipe';
 import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
@@ -8,7 +9,7 @@ const filteredRecipes = computed(() => recipeStore.filteredRecipes(searchQuery.v
 </script>
 
 <template>
-  <main>
+  <main class="bg-red-500">
     <h1>Home</h1>
     <div>
       <input type="text" v-model="searchQuery" placeholder="Search ..." />
@@ -23,5 +24,6 @@ const filteredRecipes = computed(() => recipeStore.filteredRecipes(searchQuery.v
       </ul>
     </nav>
     <div v-else>No recipe found!</div>
+    <RecipeList :recipe="filteredRecipes" />
   </main>
 </template>

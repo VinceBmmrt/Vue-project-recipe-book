@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-interface Recipe {
+export interface Recipe {
   id: string;
   name: string;
   description: string;
@@ -11,6 +11,17 @@ type NewRecipe = Omit<Recipe, 'id'>;
 
 export const useRecipeStore = defineStore('recipe', () => {
   const recipes = ref<Recipe[]>([]);
+  const favoritesIds = ref<string[]>([]);
+
+  const toggleFavorite = (id: string) => {
+    if (favoritesIds.value.includes(id)) {
+      favoritesIds.value = favoritesIds.value.filter((recipeId) => recipeId !== id);
+    } else {
+      favoritesIds.value.push(id);
+    }
+  };
+
+  const isFavorite = (id: string) => favoritesIds.value.includes(id);
 
   const addRecipe = (recipe: NewRecipe) => {
     const newRecipe = { id: Date.now().toString(), ...recipe };
@@ -32,5 +43,18 @@ export const useRecipeStore = defineStore('recipe', () => {
   const filteredRecipes = (searchQuery: string) =>
     recipes.value.filter((recipe) => recipe.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
-  return { recipes, addRecipe, getRecipeById, filteredRecipes, editRecipe };
+  const favoriteRecipes = computed(() =>
+    recipes.value.filter((recipe) => favoritesIds.value.includes(recipe.id)),
+  );
+  return {
+    recipes,
+    addRecipe,
+    getRecipeById,
+    filteredRecipes,
+    editRecipe,
+    favoritesIds,
+    toggleFavorite,
+    isFavorite,
+    favoriteRecipes,
+  };
 });
